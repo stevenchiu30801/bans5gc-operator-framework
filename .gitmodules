@@ -1,0 +1,9 @@
+[submodule "bans5gc-operator"]
+	path = bans5gc-operator
+	url = https://github.com/stevenchiu30801/bans5gc-operator
+[submodule "free5gc-operator"]
+	path = free5gc-operator
+	url = https://github.com/stevenchiu30801/free5gc-operator
+[submodule "onos-bandwidth-operator"]
+	path = onos-bandwidth-operator
+	url = https://github.com/stevenchiu30801/onos-bandwidth-operator
