@@ -26,7 +26,7 @@ submodule: ## Install and update all submodules
 		cd ${MAKEDIR}; \
 	done
 
-install: submodule ## Install all operator resources
+install: ## Install all operator resources
 	$(call echo_blue,"...... Install free5gc Operator ......")
 	cd free5gc-operator && make install
 	$(call echo_blue,"...... Install ONOS Bandwidth Operator ......")
@@ -35,7 +35,7 @@ install: submodule ## Install all operator resources
 	cd bans5gc-operator && make install
 	$(call echo_blue,"Installation Completed!")
 
-uninstall: submodule ## Uninstall all operator resources and functions
+uninstall: ## Uninstall all operator resources and functions
 	$(call echo_blue,"...... Uninstall BANS 5GC Operator ......")
 	cd bans5gc-operator && make uninstall
 	$(call echo_blue,"...... Uninstall ONOS Bandwidth Operator ......")

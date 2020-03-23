@@ -16,6 +16,9 @@ sudo apt instal make
 ### Run
 
 ```ShellSession
+# Pull the latest submodule with specific branch
+BRANCH=<branch> make submodule
+
 # Install all operator resources
 make install
 ```
