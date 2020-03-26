@@ -14,11 +14,13 @@ endef
 
 .PHONY: submodule install uninstall
 
-submodule: ## Install and update all submodules
+submodule: ## Install all submodules
 	$(call echo_blue,"...... Initialize and Update All Submodules ......")
 	git submodule init
 	git submodule update
-	$(call echo_blue,"...... Pull the Latest Submodule Commits ......")
+
+update-submodule: ## Update submodules with specified branch
+	$(call echo_blue,"...... Pull Submodule with Branch \'${BRANCH}\' ......")
 	-@declare -a submodule_list=(${SUBMODULES}); for submodule in "$${submodule_list[@]}"; \
 	do \
 		cd $$submodule; \

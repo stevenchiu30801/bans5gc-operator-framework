@@ -16,8 +16,11 @@ sudo apt instal make
 ### Run
 
 ```ShellSession
-# Pull the latest submodule with specific branch
-BRANCH=<branch> make submodule
+# Install submodules
+make submodule
+
+# Pull submodules with the specified branch
+BRANCH=<branch> make update-submodule
 
 # Install all operator resources
 make install
