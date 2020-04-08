@@ -35,6 +35,7 @@ install: ## Install all operator resources
 	cd onos-bandwidth-operator && make install
 	$(call echo_blue,"...... Install BANS 5GC Operator ......")
 	cd bans5gc-operator && make install
+	${SHELL} scripts/wait_pods_running.sh ${NAMESPACE}
 	$(call echo_blue,"Installation Completed!")
 
 uninstall: ## Uninstall all operator resources and functions
