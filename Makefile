@@ -12,7 +12,7 @@ define echo_blue
 	@echo -e "${COLOR_LIGHT_BLUE}${1}${COLOR_WHITE}"
 endef
 
-.PHONY: submodule install uninstall
+.PHONY: submodule install uninstall reset-infra
 
 submodule: ## Install all submodules
 	$(call echo_blue,"...... Initialize and Update All Submodules ......")
@@ -50,3 +50,12 @@ uninstall: ## Uninstall all operator resources and functions
 	$(call echo_blue,"...... Uninstall free5gc ......")
 	cd free5gc-operator && make reset-free5gc
 	$(call echo_blue,"Uninstallation Completed!")
+
+reset-infra:
+	$(call echo_blue,"...... Delete BansSlice ......")
+	${SHELL} scripts/remove_bansslice.sh
+	$(call echo_blue,"...... Uninstall ONOS ......")
+	cd onos-bandwidth-operator && make reset-onos
+	$(call echo_blue,"...... Uninstall free5gc ......")
+	cd free5gc-operator && make reset-free5gc
+	$(call echo_blue,"Reset Completed!")
