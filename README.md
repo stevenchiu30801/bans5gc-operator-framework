@@ -13,15 +13,9 @@ sudo apt instal make
 
 ## Usage
 
-### Network Environment
+### BANS-5GC-in-a-Box
 
-```
-     |---- Mongo Service Connection ----|
-     |                                  |
-RANSIM Node ----- P4 Switch ----- Kubernetes Node
-```
-
-### Run
+#### Run
 
 ```ShellSession
 # On Kubernetes node
@@ -30,14 +24,10 @@ RANSIM Node ----- P4 Switch ----- Kubernetes Node
 make submodule
 
 # Pull submodules with the specified branch
-BRANCH=<branch> make update-submodule
+BRANCH=bmv2-fabric make update-submodule
 
 # Install all operator resources
-SRIOV_INTF=<sriov-interface> make install
-
-# Create ONOS device and queue netcfg
-kubectl apply -f onos-bandwidth-operator/deploy/crds/bans.io_v1alpha1_onosdevicenetcfg_cr.yaml
-kubectl apply -f onos-bandwidth-operator/deploy/crds/bans.io_v1alpha1_onosqueuenetcfg_cr.yaml
+make install
 
 # Create network slice infrastructure
 kubectl apply -f bans5gc-operator/deploy/crds/bans.io_v1alpha1_bansslice_cr1.yaml
@@ -46,7 +36,56 @@ kubectl apply -f bans5gc-operator/deploy/crds/bans.io_v1alpha1_bansslice_cr1.yam
 kubectl describe bansslice.bans.io example-bansslice1 | grep -A 1 Status
 ```
 
-### Procedure Test
+#### Procedure Test
+
+```ShellSession
+export RANSIM_POD=$( kubectl get pods -l app.kubernetes.io/instance=free5gc -l app.kubernetes.io/name=ransim -o jsonpath='{.items[0].metadata.name}' )
+
+# Run tests with example slice 1
+kubectl exec $RANSIM_POD -- bash -c "cd src/test && go test -vet=off -run TestRegistration -ue-idx=1 -sst=1 -sd=010203"
+```
+
+### BANS-5GC with P4 Fabric
+
+#### Network Environment
+
+```
+     |---- Mongo Service Connection ----|
+     |                                  |
+RANSIM Node ----- P4 Switch ----- Kubernetes Node
+```
+
+#### Run
+
+```ShellSession
+# On Kubernetes node
+
+# Install submodules
+make submodule
+
+# Pull submodules with the specified branch
+make update-submodule
+
+# Modify the IP address of P4Runtime in device netcfg
+# `onos-bandwidth-operator/deploy/onos-device-netcfg.json`
+
+# Install all operator resources
+SRIOV_INTF=<sriov-interface> make install
+
+# Modify the node name of connect points in fabric config
+# `onos-bandwidth-operator/deploy/crds/bans.io_v1alpha1_fabricconfig_cr.yaml`
+
+# Create fabric configuration
+kubectl apply -f onos-bandwidth-operator/deploy/crds/bans.io_v1alpha1_fabricconfig_cr.yaml
+
+# Create network slice infrastructure
+kubectl apply -f bans5gc-operator/deploy/crds/bans.io_v1alpha1_bansslice_cr1.yaml
+
+# Check if status of the new slice is ready before proceeding
+kubectl describe bansslice.bans.io example-bansslice1 | grep -A 1 Status
+```
+
+#### Procedure Test
 
 ```ShellSession
 # On RANSIM node
