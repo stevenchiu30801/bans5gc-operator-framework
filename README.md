@@ -66,6 +66,10 @@ make submodule
 # Pull submodules with the specified branch
 make update-submodule
 
+# For the first time, please install SR-IOV device plugin before running Kubernetes
+cd free5gc-operator
+make sriovdp
+
 # Modify the IP address of P4Runtime in device netcfg
 # `onos-bandwidth-operator/deploy/onos-device-netcfg.json`
 
